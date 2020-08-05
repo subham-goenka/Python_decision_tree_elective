@@ -1,0 +1,302 @@
+from tkinter import filedialog
+
+import pandas as pd
+'''source_data='E:\Elective\choices_heritage.csv'
+df=pd.read_csv(source_data,encoding='unicode_escape')
+col_names=df.columns'''
+
+def elective_choice(source_data, cap1, cap2, cap3, cap4, dest):
+    print(cap1, cap2, cap3, cap4)
+    df = pd.read_csv(source_data, encoding='unicode_escape')
+    col_names = df.columns
+    rshape, cshape = df.shape
+    c1 = 0
+    c2 = 0
+    c3 = 0
+    c4 = 0
+    d1 = 0
+    d2 = 0
+    d3 = 0
+    d4 = 0
+    '''cap1 = 60
+    cap2 = 100
+    cap3 = 80
+    cap4 = 50'''
+
+    for i in range(rshape):
+        df.iloc[i, 8] = 0
+    # MATH 4181=4
+    for i in range(rshape):
+        if df.iloc[i, 4] == 1:
+            c1 = c1 + 1
+    if (c1 <= cap1):
+        flag = 0
+    else:
+        flag = 1
+    if flag == 0:
+        for i in range(rshape):
+            if (df.iloc[i, 4] == 1):
+                df.iloc[i, 8] = "1_"+col_names[4]
+                d1 = d1 + 1
+                df.to_csv("choices_heritage_final.csv")  # ,index=False)
+    else:
+        df.sort_values(by=['SGPA5'], inplace=True, ascending=False)
+        for i in range(rshape):
+            if (df.iloc[i, 4] == 1) and d1 < cap1:
+                df.iloc[i, 8] = "1_"+col_names[4]
+                d1 = d1 + 1
+
+        df.to_csv("choices_heritage_final.csv", index=False)
+    # MATH4182=5
+    for i in range(rshape):
+        if df.iloc[i, 5] == 1:
+            c2 = c2 + 1
+    if (c2 <= cap2):
+        flag = 0
+    else:
+        flag = 1
+    if flag == 0:
+        for i in range(rshape):
+            if (df.iloc[i, 5] == 1):
+                df.iloc[i, 8] = "1_"+col_names[5]
+                d2 = d2 + 1
+                df.to_csv("choices_heritage_final.csv", index=False)
+    else:
+        df.sort_values(by=['SGPA5'], inplace=True, ascending=False)
+        for i in range(rshape):
+            if (df.iloc[i, 5] == 1) and d2 < cap2:
+                df.iloc[i, 8] = "1_"+col_names[5]
+                d2 = d2 + 1
+
+        df.to_csv("choices_heritage_final.csv", index=False)
+    # ECEN4181
+    for i in range(rshape):
+        if df.iloc[i, 6] == 1:
+            c3 = c3 + 1
+    if (c3 <= cap3):
+        flag = 0
+    else:
+        flag = 1
+    if flag == 0:
+        for i in range(rshape):
+            if (df.iloc[i, 6] == 1):
+                df.iloc[i, 8] ="1_"+col_names[6]
+                d3 = d3 + 1
+                df.to_csv("choices_heritage_final.csv", index=False)
+    else:
+        df.sort_values(by=['SGPA5'], inplace=True, ascending=False)
+        for i in range(rshape):
+            if (df.iloc[i, 6] == 1) and d3 < cap3:
+                df.iloc[i, 8] = "1_"+col_names[6]
+                d3 = d3 + 1
+
+        df.to_csv("choices_heritage_final.csv", index=False)
+
+    # BIOT4181
+    for i in range(rshape):
+        if df.iloc[i, 7] == 1:
+            c4 = c4 + 1
+    if (c4 <= cap4):
+        flag = 0
+    else:
+        flag = 1
+    if flag == 0:
+        for i in range(rshape):
+            if (df.iloc[i, 7] == 1):
+                df.iloc[i, 8] = "1_"+col_names[7]
+                d4 = d4 + 1
+                df.to_csv("choices_heritage_final.csv", index=False)
+    else:
+        df.sort_values(by=['SGPA5'], inplace=True, ascending=False)
+        for i in range(rshape):
+            if (df.iloc[i, 7] == 1) and d4 < cap4:
+                df.iloc[i, 8] = "1_"+col_names[7]
+                d4 = d4 + 1
+
+        df.to_csv("choices_heritage_final.csv", index=False)
+
+    s1 = cap1 - d1  # seats left in math 4181  after round 1
+    s2 = cap2 - d2  # seats left in math 4182 after round 1
+    s3 = cap3 - d3  # seats left in ecen 4181 after round 1
+    s4 = cap4 - d4  # seats left in biot 4181 after round 1
+    e1 = 0
+    e2 = 0
+    e3 = 0
+    e4 = 0
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 4] == 2) and s1 != 0:
+            df.iloc[i, 8] = "2_"+col_names[4]
+            e1 = e1 + 1
+            s1 = s1 - 1
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 5] == 2) and s2 != 0:
+            df.iloc[i, 8] = "2_"+col_names[5]
+            e2 = e2 + 1
+            s2 = s2 - 1
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 6] == 2) and s3 != 0:
+            df.iloc[i, 8] = "2_"+col_names[6]
+            e3 = e3 + 1
+            s3 = s3 - 1
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 7] == 2) and s4 != 0:
+            df.iloc[i, 8] = "2_"+col_names[7]
+            e4 = e4 + 1
+            s4 = s4 - 1
+    df.to_csv("choices_heritage_final.csv", index=False)
+
+    p1 = cap1 - d1 - e1  # seats left in math4181 after round 2
+    p2 = cap2 - d2 - e2  # seats left in math4182 after round 2
+    p3 = cap3 - d3 - e3  # seats left in ecen4181 after round 2
+    p4 = cap4 - d4 - e4  # seats left in biot4181 after round 2
+    f1 = 0
+    f2 = 0
+    f3 = 0
+    f4 = 0
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 4] == 3) and p1 != 0:
+            df.iloc[i, 8] = "3_"+col_names[4]
+            p1 = p1 - 1
+            f1 = f1 + 1
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 5] == 3) and p2 != 0:
+            df.iloc[i, 8] = "3_"+col_names[5]
+            p2 = p2 - 1
+            f2 = f2 + 1
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 6] == 3) and p3 != 0:
+            df.iloc[i, 8] = "3_"+col_names[6]
+            p3 = p3 - 1
+            f3 = f3 + 1
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 7] == 3) and p4 != 0:
+            df.iloc[i, 8] = "3_"+col_names[7]
+            p4 = p4 - 1
+            f4 = f4 + 1
+    df.to_csv("choices_heritage_final.csv", index=False)
+    q1 = cap1 - d1 - e1 - f1  # seats left after round 3
+    q2 = cap2 - d2 - e2 - f2
+    q3 = cap3 - d3 - e3 - f3
+    q4 = cap4 - d4 - e4 - f4
+
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 4] == 4) and q1 != 0:
+            df.iloc[i, 8] = "4_"+col_names[4]
+            q1 = q1 - 1
+
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 5] == 4) and q2 != 0:
+            df.iloc[i, 8] = "4_"+col_names[5]
+            q2 = q2 - 1
+
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 6] == 4) and q3 != 0:
+            df.iloc[i, 8] = "4_"+col_names[6]
+            q3 = q3 - 1
+
+    for i in range(rshape):
+        if (df.iloc[i, 8] == 0) and (df.iloc[i, 7] == 4) and q4 != 0:
+            df.iloc[i, 8] = "4_"+col_names[7]
+            q4 = q4 - 1
+
+    df.to_csv(dest + "/choices_heritage_final.csv", index=False)
+
+
+from tkinter import *
+from tkinter.filedialog import askopenfilename
+import tkinter.messagebox
+
+global filename, source_path, dest_path, cap1, cap2, cap3, cap4
+
+root = Tk()
+source_path = tkinter.StringVar()
+dest_path = tkinter.StringVar()
+root.title('Student Elective Choice')
+cap1 = tkinter.StringVar()
+cap2 = tkinter.StringVar()
+cap3 = tkinter.StringVar()
+cap4 = tkinter.StringVar()
+
+
+def source_browse_button():
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+    # global source_path
+    filename = filedialog.askopenfilename()
+    source_path.set(filename)
+    return filename
+
+
+def dest_browse_button():
+    # Allow user to select a directory and store it in global var
+    # called folder_path
+    # global dest_path
+    filename = filedialog.askdirectory()
+    dest_path.set(filename)
+    return filename
+
+
+def browsefunc():
+    global folder_path, filename
+    folder_path = StringVar()
+    filename = filedialog.askopenfilename()
+    folder_path.set(filename)
+    Entry(textvariable=folder_path, width=60).grid(row=1, column=2)
+
+
+def conversion_start():
+    Label(root, text="Conversion In Progress").grid(row=3, column=2)
+    tkinter.messagebox.showinfo("In Progress", "Please Wait\nFILE is getting ready")
+
+
+def conversion_stop():
+    Label(root, text="Conversion Complete").grid(row=3, column=2)
+    tkinter.messagebox.showinfo("Compete", "File Conversion Complete")
+
+
+'''
+def input_1():
+    cap1=input()
+    return cap1
+
+def input_2():
+    cap2=input()
+    return cap2
+
+def input_3():
+    cap3=input()
+    return cap3
+
+def input_4():
+    cap4=input()
+    return cap4
+'''
+
+Label(root, text="Source", width=12).grid(row=1, column=1)
+Button(root, text="Browse", width=8, command=source_browse_button).grid(row=1, column=3)
+Entry(textvariable=source_path, width=60).grid(row=1, column=2)
+
+Label(root, text="Destination", width=12).grid(row=2, column=1)
+Button(root, text="Browse", width=8, command=dest_browse_button).grid(row=2, column=3)
+Entry(textvariable=dest_path, width=60).grid(row=2, column=2)
+
+Label(root, text="capacity 1", width=12).grid(row=3, column=1)
+Entry(textvariable=cap1).grid(row=3, column=2)
+
+Label(root, text="capacity 2", width=12).grid(row=4, column=1)
+Entry(textvariable=cap2).grid(row=4, column=2)
+
+Label(root, text="capacity 3", width=12).grid(row=5, column=1)
+Entry(textvariable=cap3).grid(row=5, column=2)
+
+Label(root, text="capacity 4", width=12).grid(row=6, column=1)
+Entry(textvariable=cap4).grid(row=6, column=2)
+
+Button(root, text="Submit", command=lambda: [conversion_start(), elective_choice(source_path.get(),
+                                                                                 int(cap1.get()), int(cap2.get()),
+                                                                                 int(cap3.get()), int(cap4.get()),
+                                                                                 dest_path.get()),
+                                             conversion_stop()]).grid(row=7, column=1)
+
+Button(root, text="Close", command=root.destroy).grid(row=7, column=3)
+root.mainloop()
